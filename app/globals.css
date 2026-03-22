@@ -1,0 +1,315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Backgrounds */
+  --bg-base: #FBF7F1;
+  --bg-surface: #F5F0EB;
+  --bg-surface-hover: #EAE4DC;
+  --bg-surface-active: #E5E0DA;
+
+  /* Text */
+  --text-primary: #2D2D2D;
+  --text-secondary: #6E6E6E;
+  --text-muted: #999999;
+
+  /* Accent */
+  --accent: #FF6600;
+  --accent-hover: #E65C00;
+
+  /* Buttons */
+  --btn-primary-bg: #1A1A1A;
+  --btn-primary-text: #FFFFFF;
+
+  /* Blobs */
+  --blob-1: rgba(255, 102, 0, 0.15);
+  --blob-2: rgba(255, 184, 0, 0.12);
+  --blob-3: rgba(255, 133, 51, 0.10);
+
+  /* Connection lines */
+  --line-color: rgba(255, 102, 0, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Liquid Glass — in @layer components so Tailwind utilities (absolute, hidden, etc.) override */
+@layer components {
+  .liquid-glass {
+    --lg-radius: 20px;
+    --lg-blur: 1px;
+    --lg-tint: rgb(255 255 255 / 80%);
+
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    border-radius: var(--lg-radius);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  }
+
+  .liquid-glass:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .liquid-glass .lg__effect {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: var(--lg-radius);
+    overflow: hidden;
+    isolation: isolate;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(150%);
+    backdrop-filter: blur(var(--lg-blur)) saturate(150%);
+  }
+
+  .liquid-glass .lg__tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: var(--lg-radius);
+    background: var(--lg-tint);
+    pointer-events: none;
+  }
+
+  .liquid-glass .lg__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: var(--lg-radius);
+    overflow: hidden;
+    pointer-events: none;
+    box-shadow:
+      inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+      inset -1px -1px 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .liquid-glass .lg__content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+  }
+
+  /* Bento animated backgrounds — sits between shine (z-2) and content (z-3) */
+  .bento-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: var(--lg-radius);
+    transition: all 0.3s ease-out;
+  }
+
+  .group:hover .bento-bg:not(.bento-bg--no-zoom) {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Navbar glassmorphic */
+.glass-nav {
+  background: rgba(251, 247, 241, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Primary CTA button */
+.btn-primary {
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  border: none;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 24px rgba(255, 102, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Focus indicators for accessibility */
+.btn-primary:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* Input field */
+.input-glass {
+  width: 100%;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bg-surface-active);
+  border-radius: 16px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-glass:focus {
+  border-color: rgba(255, 102, 0, 0.4);
+  box-shadow: 0 2px 12px rgba(255, 102, 0, 0.08);
+}
+
+.input-glass::placeholder {
+  color: var(--text-muted);
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/noise.jpg');
+  background-repeat: repeat;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Skip to content (accessibility) */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  padding: 8px 16px;
+  z-index: 200;
+  transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Personas marquee carousel */
+.personas-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.personas-marquee {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: marquee-scroll 35s linear infinite;
+}
+
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes beam-flow {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes beam-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Persona card hover lift */
+.persona-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.persona-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile heading overrides */
+@media (max-width: 768px) {
+  .heading-hero {
+    font-size: 40px !important;
+  }
+  .heading-section {
+    font-size: 32px !important;
+  }
+}

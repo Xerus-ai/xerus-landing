@@ -1,0 +1,48 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+
+# env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# scratch/test
+test-scroll-video/
+Untitled design/
+video/
+
+# large media
+*.mp4
+!public/images/frames/bgvideo.mp4
+
+# build artifacts
+dist/
+
+# OS
+Thumbs.db
+bash.exe.stackdump
+
+# IDE
+.vscode/
+.idea/
+
+# AWS
+infra/
+amplify.yml
+.vercel
