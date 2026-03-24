@@ -215,6 +215,20 @@ export default function CTA() {
               >
                 We'll reach out within 48 hours.
               </m.p>
+
+              {/* Sign in link for users with codes */}
+              <m.p
+                className="font-body text-body-small text-text-muted mt-4"
+                variants={staggerItem}
+              >
+                Already have an invite code?{' '}
+                <a
+                  href="https://app.xerus.ai"
+                  className="text-accent hover:underline underline-offset-2 transition-colors"
+                >
+                  Sign in to the app
+                </a>
+              </m.p>
             </m.form>
           )}
         </div>

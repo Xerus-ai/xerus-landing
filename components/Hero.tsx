@@ -79,15 +79,25 @@ export default function Hero() {
           </m.p>
 
           {/* CTA */}
-          <m.a
-            href="#request-access"
-            className="btn-primary inline-flex mt-8"
+          <m.div
+            className="flex flex-col items-center gap-3 mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6, ease }}
           >
-            Request Early Access
-          </m.a>
+            <a
+              href="#request-access"
+              className="btn-primary inline-flex"
+            >
+              Request Early Access
+            </a>
+            <a
+              href="https://app.xerus.ai"
+              className="font-body text-body-small text-text-secondary hover:text-accent transition-colors"
+            >
+              Have an invite code? <span className="text-accent underline underline-offset-2">Sign in</span>
+            </a>
+          </m.div>
         </div>
 
         {/* Floating task cards */}

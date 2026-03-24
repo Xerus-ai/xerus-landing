@@ -43,10 +43,18 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop CTA */}
-        <a href="#request-access" className="btn-primary hidden md:inline-flex">
-          Request Early Access
-        </a>
+        {/* Desktop CTAs */}
+        <div className="hidden md:flex items-center gap-4">
+          <a
+            href="https://app.xerus.ai"
+            className="font-body text-body-small text-text-secondary hover:text-accent transition-colors"
+          >
+            Sign in
+          </a>
+          <a href="#request-access" className="btn-primary inline-flex">
+            Request Early Access
+          </a>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -73,6 +81,13 @@ export default function Navbar() {
             >
               <X size={24} />
             </button>
+            <a
+              href="https://app.xerus.ai"
+              className="font-body text-lg text-text-secondary hover:text-accent transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              Sign in with invite code
+            </a>
             <a
               href="#request-access"
               className="btn-primary inline-flex text-lg"
