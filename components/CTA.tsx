@@ -66,7 +66,7 @@ export default function CTA() {
       if (utmCampaign) formData.append('utm_campaign', utmCampaign);
 
       await fetch(
-        'https://script.google.com/macros/s/AKfycbzMaDvwD49OMW-eAYL1JNvHqYuo4683Cr-K_Jodubxug69Eqk-vZcoWDbTockqAbUEH/exec',
+        'https://script.google.com/macros/s/AKfycbzKciC7HFynxOiXNcm0BVWZp4Vue4omWZlty9hU_FKrtu1thjmFLy385-s-poHUZyxi/exec',
         {
           method: 'POST',
           mode: 'no-cors',
