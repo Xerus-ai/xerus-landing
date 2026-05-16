@@ -4,17 +4,19 @@ import { useState, useCallback } from 'react';
 import { m } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/variants';
 
-const roles = [
-  'Solo founder',
-  'Content creator',
-  'Coach or mentor',
-  'Consultant',
+const topics = [
+  'General inquiry',
+  'Partnership',
+  'Enterprise',
+  'Bug report',
   'Other',
 ];
 
 export default function CTA() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [topic, setTopic] = useState('');
+  const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -27,13 +29,21 @@ export default function CTA() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim()) {
+      setError('Name is required');
+      return;
+    }
     const emailError = validateEmail(email);
     if (emailError) {
       setError(emailError);
       return;
     }
-    if (!role) {
-      setError('Please select your role');
+    if (!topic) {
+      setError('Please select a topic');
+      return;
+    }
+    if (!message.trim()) {
+      setError('Please enter a message');
       return;
     }
 
@@ -42,10 +52,11 @@ export default function CTA() {
 
     try {
       const formData = new URLSearchParams();
+      formData.append('name', name);
       formData.append('email', email);
-      formData.append('role', role);
+      formData.append('topic', topic);
+      formData.append('message', message);
 
-      // Capture UTM params for attribution
       const params = new URLSearchParams(window.location.search);
       const utmSource = params.get('utm_source') || '';
       const utmMedium = params.get('utm_medium') || '';
@@ -63,14 +74,13 @@ export default function CTA() {
         }
       );
 
-      // Fire GA4 conversion events
       if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
         window.gtag('event', 'generate_lead', {
           currency: 'USD',
           value: 1,
         });
-        window.gtag('event', 'early_access_requested', {
-          role: role,
+        window.gtag('event', 'contact_form_submitted', {
+          topic: topic,
           utm_source: utmSource,
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,
@@ -87,9 +97,9 @@ export default function CTA() {
 
   return (
     <section
-        id="request-access"
+        id="contact"
         className="relative z-10 py-section px-6 min-h-[60vh] flex items-center justify-center"
-        aria-label="Request early access"
+        aria-label="Contact us"
       >
         <div className="max-w-lg mx-auto text-center w-full">
           <m.div
@@ -99,10 +109,10 @@ export default function CTA() {
             variants={fadeInUp}
           >
             <h2 className="font-heading text-heading-section heading-section text-text-primary mb-4">
-              Ready to build your office?
+              Get in touch
             </h2>
             <p className="font-body text-subheading text-text-muted backdrop-blur-sm bg-cream-base/50 rounded-full px-6 py-2 inline-block mb-10">
-              Xerus is <span className="text-accent">invite-only</span>. Request early access.
+              Questions, partnerships, or just want to say hi?
             </p>
           </m.div>
 
@@ -122,10 +132,10 @@ export default function CTA() {
               <div className="lg__shine" aria-hidden="true" />
               <div className="lg__content p-8">
                 <p className="font-heading text-heading-card text-text-primary mb-2">
-                  You're on the list.
+                  Message sent!
                 </p>
                 <p className="font-body text-body-small text-text-secondary">
-                  We'll reach out within 48 hours.
+                  We'll get back to you soon.
                 </p>
               </div>
             </m.div>
@@ -139,7 +149,24 @@ export default function CTA() {
               variants={staggerContainer}
               noValidate
             >
-              {/* Email input */}
+              <m.div variants={staggerItem}>
+                <label htmlFor="name" className="sr-only">
+                  Your name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (error) setError('');
+                  }}
+                  className="input-glass"
+                  required
+                />
+              </m.div>
+
               <m.div variants={staggerItem}>
                 <label htmlFor="email" className="sr-only">
                   Email address
@@ -165,70 +192,63 @@ export default function CTA() {
                 />
               </m.div>
 
-              {/* Role dropdown */}
               <m.div variants={staggerItem}>
-                <label htmlFor="role" className="sr-only">
-                  Your role
+                <label htmlFor="topic" className="sr-only">
+                  Topic
                 </label>
                 <select
-                  id="role"
-                  value={role}
+                  id="topic"
+                  value={topic}
                   onChange={(e) => {
-                    setRole(e.target.value);
+                    setTopic(e.target.value);
                     if (error) setError('');
                   }}
                   className="input-glass appearance-none cursor-pointer"
                   required
                 >
                   <option value="" disabled>
-                    I am a...
+                    What's this about?
                   </option>
-                  {roles.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
+                  {topics.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
                     </option>
                   ))}
                 </select>
               </m.div>
 
-              {/* Error message */}
+              <m.div variants={staggerItem}>
+                <label htmlFor="message" className="sr-only">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  placeholder="Your message..."
+                  value={message}
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                    if (error) setError('');
+                  }}
+                  className="input-glass resize-none min-h-[120px]"
+                  required
+                  rows={4}
+                />
+              </m.div>
+
               {error && (
                 <p id="form-error" className="text-sm text-accent font-body" role="alert">
                   {error}
                 </p>
               )}
 
-              {/* Submit button */}
               <m.button
                 type="submit"
                 className="btn-primary inline-flex w-full justify-center"
                 disabled={submitting}
                 variants={staggerItem}
               >
-                {submitting ? 'Sending...' : 'Request Early Access'}
+                {submitting ? 'Sending...' : 'Send Message'}
               </m.button>
-
-              {/* Note */}
-              <m.p
-                className="font-body text-body-small text-text-secondary mt-2"
-                variants={staggerItem}
-              >
-                We'll reach out within 48 hours.
-              </m.p>
-
-              {/* Sign in link for users with codes */}
-              <m.p
-                className="font-body text-body-small text-text-muted mt-4"
-                variants={staggerItem}
-              >
-                Already have an invite code?{' '}
-                <a
-                  href="https://app.xerus.ai"
-                  className="text-accent hover:underline underline-offset-2 transition-colors"
-                >
-                  Sign in to the app
-                </a>
-              </m.p>
             </m.form>
           )}
         </div>

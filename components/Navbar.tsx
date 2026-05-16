@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { m, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Navbar() {
@@ -46,13 +46,19 @@ export default function Navbar() {
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href="https://app.xerus.ai"
-            className="font-body text-body-small text-text-secondary hover:text-accent transition-colors"
+            href="https://github.com/Xerus-ai/xerus"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cream-active bg-white/80 hover:bg-white font-body text-body-small text-text-primary hover:text-accent transition-all shadow-sm"
           >
-            Sign in
+            <Star size={16} />
+            Star on GitHub
           </a>
-          <a href="#request-access" className="btn-primary inline-flex">
-            Request Early Access
+          <a
+            href="https://app.xerus.ai"
+            className="btn-primary inline-flex"
+          >
+            Go to App
           </a>
         </div>
 
@@ -82,18 +88,21 @@ export default function Navbar() {
               <X size={24} />
             </button>
             <a
-              href="https://app.xerus.ai"
-              className="font-body text-lg text-text-secondary hover:text-accent transition-colors"
+              href="https://github.com/Xerus-ai/xerus"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-body text-lg text-text-secondary hover:text-accent transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              Sign in with invite code
+              <Star size={20} />
+              Star on GitHub
             </a>
             <a
-              href="#request-access"
+              href="https://app.xerus.ai"
               className="btn-primary inline-flex text-lg"
               onClick={() => setMenuOpen(false)}
             >
-              Request Early Access
+              Go to App
             </a>
           </m.div>
         )}
